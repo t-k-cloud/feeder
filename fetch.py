@@ -86,3 +86,8 @@ for path in paths:
 	# write back to the file
 	with open(path, 'w') as fh:
 		json.dump(j, fh, indent=4)
+	# make symbolic link to support listify
+	cur_dir = os.path.dirname(os.path.realpath(__file__))
+	from_path = cur_dir + '/' + path
+	link_path = cur_dir + '/' + dirname + '/_list_.json'
+	os.system('ln -sf ' + from_path + ' ' + link_path)
