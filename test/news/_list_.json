@@ -1,4 +1,5 @@
 {
   "detailed": true,
+  "sortable_keys": ["title", "failed", "_dir_num_files"],
   "view-engine": "feed-folder-view"
 }
