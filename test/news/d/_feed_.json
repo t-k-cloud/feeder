@@ -23,5 +23,6 @@
         "http://armsword.com/2014/05/18/light-cgi-server/": "2018-11-17 18:39:12.593279",
         "http://armsword.com/2014/04/20/redis-dict-analyze/": "2018-11-17 18:39:12.593463",
         "http://armsword.com/2014/04/09/letter-combinations-of-a-phone-number/": "2018-11-17 18:39:12.593649"
-    }
+    },
+    "view-engine": "feed-view"
 }

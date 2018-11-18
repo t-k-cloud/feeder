@@ -85,6 +85,7 @@ for path in paths:
 		print("[%d unread] %s" % (unread, path))
 	# write back to the file
 	with open(path, 'w') as fh:
+		j['view-engine'] = 'feed-view' # support listify
 		json.dump(j, fh, indent=4)
 	# make symbolic link to support listify
 	cur_dir = os.path.dirname(os.path.realpath(__file__))

@@ -13,5 +13,6 @@
         "http://freemind.pluskid.org/misc/disable-os-x-system-integrity-protection": "2018-11-17 18:43:45.243595",
         "http://freemind.pluskid.org/misc/optimization-and-assumptions": "2018-11-17 18:43:45.243876",
         "http://freemind.pluskid.org/misc/the-volume-of-high-dimensional-unit-ball": "2018-11-17 18:43:45.244061"
-    }
+    },
+    "view-engine": "feed-view"
 }
