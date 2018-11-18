@@ -1,18 +1,3 @@
 {
-    "url": "http://freemind.pluskid.org/rss.xml",
-    "unread": 10,
-    "failed": 15,
-    "recent": {
-        "http://freemind.pluskid.org/book/expressionism-and-inceptionism": "2018-11-17 18:43:45.240701",
-        "http://freemind.pluskid.org/books/contemporary-art-brain-science-and-ai-introduction": "2018-11-17 18:43:45.241058",
-        "http://freemind.pluskid.org/misc/2017": "2018-11-17 18:43:45.241638",
-        "http://freemind.pluskid.org/technology/distributed-learning-in-julia": "2018-11-17 18:43:45.242134",
-        "http://freemind.pluskid.org/technology/plotting-3d-surfaces-in-python": "2018-11-17 18:43:45.242453",
-        "http://freemind.pluskid.org/misc/2016-summary": "2018-11-17 18:43:45.243176",
-        "http://freemind.pluskid.org/misc/could-a-neuroscientist-understand-a-microprocessor": "2018-11-17 18:43:45.243435",
-        "http://freemind.pluskid.org/misc/disable-os-x-system-integrity-protection": "2018-11-17 18:43:45.243595",
-        "http://freemind.pluskid.org/misc/optimization-and-assumptions": "2018-11-17 18:43:45.243876",
-        "http://freemind.pluskid.org/misc/the-volume-of-high-dimensional-unit-ball": "2018-11-17 18:43:45.244061"
-    },
-    "view-engine": "feed-view"
+    "url": "http://armsword.com/atom.xml"
 }
