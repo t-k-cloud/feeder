@@ -17,9 +17,6 @@ MAX_CACHE = 1000
 def fetch(url):
 	socket.setdefaulttimeout(20)
 	feeds = feedparser.parse(url)
-	if feeds.bozo:
-		print('badly-formed or unreachable.')
-		# do not return, try our best
 	# failed to crawler data
 	if not len(feeds.entries) > 0:
 		raise Exception('failed')
@@ -60,10 +57,6 @@ def write_feeds(dirname, entries, recent):
 			break
 		#print(to_print)
 
-def cnt_json(dirname):
-	jsons = glob.glob(dirname + '/*.feed.json')
-	return len(jsons)
-
 print('[search path]', SRCH_PATH)
 paths = glob.glob(SRCH_PATH)
 
@@ -84,15 +77,14 @@ for path in paths:
 			title, link, entries = fetch(j['url'])
 		except:
 			j['failed'] += 1
-			print("[failed] %s" % path)
+			print("<* Failed *> %s" % path)
 			continue
 		write_feeds(dirname, entries, j['recent'])
-		unread = cnt_json(dirname)
 		j['title'] = title
 		j['link'] = link
 		j['view-engine'] = 'feed-view' # support listify
-		j['unread'] = unread
-		print("[%d unread] %s" % (unread, path))
+		j['detailed'] = True # support listify
+		print("[%s] %s" % (title, path))
 	# write back to the file
 	with open(path, 'w') as fh:
 		json.dump(j, fh, indent=4)
