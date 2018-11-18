@@ -73,6 +73,13 @@ for path in paths:
 	# read _feed_.json file
 	with open(path) as fh:
 		j = json.load(fh)
+		if 'failed' not in j:
+			j['failed'] = 0
+		if 'recent' not in j:
+			j['recent'] = {}
+		if 'url' not in j:
+			print("[no url] %s" % path)
+			continue
 		try:
 			title, link, entries = fetch(j['url'])
 		except:
@@ -81,14 +88,16 @@ for path in paths:
 			continue
 		write_feeds(dirname, entries, j['recent'])
 		unread = cnt_json(dirname)
+		j['title'] = title
+		j['link'] = link
+		j['view-engine'] = 'feed-view' # support listify
 		j['unread'] = unread
 		print("[%d unread] %s" % (unread, path))
 	# write back to the file
 	with open(path, 'w') as fh:
-		j['view-engine'] = 'feed-view' # support listify
 		json.dump(j, fh, indent=4)
-	# make symbolic link to support listify
+	# make _list_.json copy to support listify
 	cur_dir = os.path.dirname(os.path.realpath(__file__))
 	from_path = cur_dir + '/' + path
 	link_path = cur_dir + '/' + dirname + '/_list_.json'
-	os.system('ln -sf ' + from_path + ' ' + link_path)
+	os.system('cp -f ' + from_path + ' ' + link_path)
