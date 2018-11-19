@@ -1,3 +1,6 @@
+node_modules/
+yarn.lock
 *.swp
 *.feed.json
+test/
 */*/*/_list_.json

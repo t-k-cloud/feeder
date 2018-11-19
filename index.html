@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Feeder</title>
+    <script src="node_modules/vue/dist/vue.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="node_modules/axios/dist/axios.min.js" type="text/javascript" charset="utf-8"></script>
+  </head>
+<body>
+  <h1>Add new feed link</h1>
+  <div id="app">
+    <div style="display: flex; justify-content: center; flex-wrap: wrap">
+      <select style="flex: 1" v-model="folder">
+        <option v-for="f in folders" v-bind:value="f">{{f}}</option>
+      </select>
+      <input style="flex: 5" type="text" v-model="url"/>
+      <button style="flex: 1" @click="add_feed(folder, url)">add feed</button>
+    </div>
+  <h3>Server response: {{response.result}}</h3>
+  <pre>{{response}}</pre>
+  </div>
+  <script type="text/javascript" charset="utf-8">
+  new Vue({
+    el: '#app',
+    data: {
+      folder: 'blog',
+      url: '',
+      response: {},
+      folders: ['blog', 'news']
+    },
+    methods: {
+      add_feed: function (folder, url) {
+        var vm = this
+        vm.response = {'OK': 'wating server response...'}
+        axios.get('/add-feed', {
+          params: {
+            'folder': folder,
+            'url': url
+          }
+        }).then(function (res) {
+          vm.response = res.data
+        });
+      }
+    }
+  })
+  </script>
+</body>
+</html>
