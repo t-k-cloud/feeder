@@ -12,7 +12,8 @@ var app = express();
 app.use(express.static('.'));
 app.use(bodyParser.json());
 
-FEED_ROOT = './test'
+// FEED_ROOT = './test'
+FEED_ROOT = './feeds'
 
 /* load all existing feed links */
 function read_feed_links() {
@@ -36,6 +37,7 @@ function read_feed_links() {
 function fetch_feed_title(url) {
 	return new Promise((resolve) => {
 		var feedparser = new feedParser();
+		process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 		var req = request(url)
 		req.on('error', function (error) {
 			resolve([null, 'Connection error'])
