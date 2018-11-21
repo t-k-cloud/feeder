@@ -104,16 +104,20 @@ with open(FEED_LIST + '.tmp', 'w') as feed_list_fh:
 		tag = path.split('/')[-3]
 		print(tag, end=": ")
 		dirname = os.path.dirname(path)
-		# process _feed_.json file
-		j = process_feed_file(path)
-		# write back to the file
-		with open(path, 'w') as fh:
-			json.dump(j, fh, indent=4)
-		# make _list_.json copy to support listify
-		cur_dir = os.path.dirname(os.path.realpath(__file__))
-		from_path = cur_dir + '/' + path
-		link_path = cur_dir + '/' + dirname + '/_list_.json'
-		shutil.copyfile(from_path, link_path)
+		try:
+			# process _feed_.json file
+			j = process_feed_file(path)
+			# write back to the file
+			with open(path, 'w') as fh:
+				json.dump(j, fh, indent=4)
+			# make _list_.json copy to support listify
+			cur_dir = os.path.dirname(os.path.realpath(__file__))
+			from_path = cur_dir + '/' + path
+			link_path = cur_dir + '/' + dirname + '/_list_.json'
+			shutil.copyfile(from_path, link_path)
+		except FileNotFoundError:
+			print("[path not found] %s" % path)
+			continue
 		# append to feed list
 		print(tag, j['url'], file=feed_list_fh)
 		feed_list_fh.flush()
