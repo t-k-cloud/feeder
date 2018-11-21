@@ -101,7 +101,8 @@ paths = glob.glob(SRCH_PATH)
 
 with open(FEED_LIST, 'w') as feed_list_fh:
 	for path in paths:
-		print(path, end=": ")
+		tag = path.split('/')[-3]
+		print(tag, path, end=": ")
 		dirname = os.path.dirname(path)
 		# process _feed_.json file
 		j = process_feed_file(path)
@@ -114,5 +115,5 @@ with open(FEED_LIST, 'w') as feed_list_fh:
 		link_path = cur_dir + '/' + dirname + '/_list_.json'
 		shutil.copyfile(from_path, link_path)
 		# append to feed list
-		print(j['url'], file=feed_list_fh)
+		print(tag, j['url'], file=feed_list_fh)
 		feed_list_fh.flush()
