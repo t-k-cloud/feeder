@@ -10,6 +10,12 @@ function parseJSON() {
 	python -c "import sys, json; print(json.load(sys.stdin)['result'])"
 }
 
+function ctrl_c() {
+	exit 1
+}
+
+trap ctrl_c INT
+
 while read line
 do
 	echo $line
