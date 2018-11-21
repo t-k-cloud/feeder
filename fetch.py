@@ -99,7 +99,7 @@ def process_feed_file(path):
 print('[search path]', SRCH_PATH)
 paths = glob.glob(SRCH_PATH)
 
-with open(FEED_LIST, 'w') as feed_list_fh:
+with open(FEED_LIST + '.tmp', 'w') as feed_list_fh:
 	for path in paths:
 		tag = path.split('/')[-3]
 		print(tag, path, end=": ")
@@ -117,3 +117,4 @@ with open(FEED_LIST, 'w') as feed_list_fh:
 		# append to feed list
 		print(tag, j['url'], file=feed_list_fh)
 		feed_list_fh.flush()
+shutil.move(FEED_LIST + '.tmp', FEED_LIST)
