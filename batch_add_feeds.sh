@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 function request() {
 	curl -G \
 		"http://localhost:8821/add-feed/" \
-		--data folder=blog \
-		--data-urlencode url=$1
+		--data folder=$1 \
+		--data-urlencode url=$2
 }
 
 function parseJSON() {
@@ -18,6 +18,8 @@ trap ctrl_c INT
 
 while read line
 do
-	echo $line
-	request "$line" 2> /dev/null | parseJSON
+	tag=`echo $line | awk '{print $1}'`
+	url=`echo $line | awk '{print $2}'`
+	echo "tag=$tag, url=$url"
+	request "$tag" "$url" 2> /dev/null | parseJSON
 done < feeds/feed.list
