@@ -38,9 +38,9 @@ function fetch_feed_title(url) {
 	return new Promise((resolve) => {
 		var feedparser = new feedParser();
 		process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
-		var req = request(url)
+		var req = request(url, {timeout: 15 * 1000} /* milliseconds */)
 		req.on('error', function (error) {
-			resolve([null, 'Connection error'])
+			resolve([null, 'Connection error: ' + error])
 		});
 
 		req.on('response', function (res) {
