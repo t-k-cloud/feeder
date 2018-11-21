@@ -98,6 +98,8 @@ def process_feed_file(path):
 
 print('[search path]', SRCH_PATH)
 paths = glob.glob(SRCH_PATH)
+tot_paths = len(paths)
+cnt = 0
 
 with open(FEED_LIST + '.tmp', 'w') as feed_list_fh:
 	for path in paths:
@@ -117,4 +119,9 @@ with open(FEED_LIST + '.tmp', 'w') as feed_list_fh:
 		# append to feed list
 		print(tag, j['url'], file=feed_list_fh)
 		feed_list_fh.flush()
-shutil.move(FEED_LIST + '.tmp', FEED_LIST)
+		# count processed file
+		cnt += 1
+
+# savely overwrite
+if cnt == tot_paths:
+	shutil.move(FEED_LIST + '.tmp', FEED_LIST)
