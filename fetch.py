@@ -70,6 +70,7 @@ print('[search path]', SRCH_PATH)
 paths = glob.glob(SRCH_PATH)
 
 for path in paths:
+	print(path, end=": ")
 	dirname = os.path.dirname(path)
 	j = {}
 	# read _feed_.json file
