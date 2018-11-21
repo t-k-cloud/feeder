@@ -40,7 +40,7 @@ def fetch(url):
 	return title, link, entries
 
 def write_feeds(dirname, entries, recent):
-	any_update = False
+	any_update = 0
 	# write JSON feeds to files
 	for ent in entries:
 		if (len(ent["title"]) == 0 or
@@ -54,7 +54,7 @@ def write_feeds(dirname, entries, recent):
 			with open(p, 'w') as fh:
 				json.dump(ent, fh)
 				recent[link] = str(datetime.datetime.now())
-			any_update = True
+			any_update += 1
 	# avoid recent records being oversized
 	ordered_keys = sorted(recent, key=lambda x: x[1], reverse=True)
 	for k in ordered_keys:
@@ -87,22 +87,22 @@ def process_feed_file(path):
 			j['failed'] += 1
 			print("<* Failed *>")
 			return j
-		if write_feeds(dirname, entries, j['recent']):
-			j['last-update'] = str(datetime.datetime.now())
+		ups = write_feeds(dirname, entries, j['recent'])
+		if ups: j['last-update'] = str(datetime.datetime.now())
 		j['title'] = title
 		j['link'] = link
 		j['view-engine'] = 'feed-view' # support listify
 		j['detailed'] = True # support listify
-		print("[%s]" % title)
+		print("[%s] %d updates" % (title, ups))
 		return j
 
-print('[search path]', SRCH_PATH)
+print('[fetch feeds]', SRCH_PATH)
 paths = glob.glob(SRCH_PATH)
 
 with open(FEED_LIST + '.tmp', 'w') as feed_list_fh:
 	for path in paths:
 		tag = path.split('/')[-3]
-		print(tag, path, end=": ")
+		print(tag, end=": ")
 		dirname = os.path.dirname(path)
 		# process _feed_.json file
 		j = process_feed_file(path)
