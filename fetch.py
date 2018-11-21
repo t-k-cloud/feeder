@@ -6,12 +6,13 @@ import time
 import glob
 import json
 import uuid
+import shutil
 import os
 
-SRCH_PATH = "./test/**/**/_feed_.json"
+# SRCH_PATH = "./test/**/**/_feed_.json"
 # MAX_CACHE = 3
 
-# SRCH_PATH = "./feeds/**/**/_feed_.json"
+SRCH_PATH = "./feeds/**/**/_feed_.json"
 MAX_CACHE = 1000
 
 def fetch(url):
@@ -78,6 +79,9 @@ for path in paths:
 			continue
 		try:
 			title, link, entries = fetch(j['url'])
+		except KeyboardInterrupt:
+			print("Aborted by KeyboardInterrupt.")
+			exit(1)
 		except:
 			j['failed'] += 1
 			print("<* Failed *> %s" % path)
@@ -96,4 +100,4 @@ for path in paths:
 	cur_dir = os.path.dirname(os.path.realpath(__file__))
 	from_path = cur_dir + '/' + path
 	link_path = cur_dir + '/' + dirname + '/_list_.json'
-	os.system('cp -f ' + from_path + ' ' + link_path)
+	shutil.copyfile(from_path, link_path)

@@ -4,3 +4,4 @@ yarn.lock
 *.feed.json
 test/
 */*/*/_list_.json
+feeds
