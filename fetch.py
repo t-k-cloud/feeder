@@ -37,6 +37,7 @@ def fetch(url):
 	return title, link, entries
 
 def write_feeds(dirname, entries, recent):
+	any_update = False
 	# write JSON feeds to files
 	for ent in entries:
 		link = ent["link"]
@@ -45,6 +46,7 @@ def write_feeds(dirname, entries, recent):
 			with open(p, 'w') as fh:
 				json.dump(ent, fh)
 				recent[link] = str(datetime.datetime.now())
+			any_update = True
 	# avoid recent records being oversized
 	ordered_keys = sorted(recent, key=lambda x: x[1], reverse=True)
 	for k in ordered_keys:
@@ -56,6 +58,7 @@ def write_feeds(dirname, entries, recent):
 			#print("[keep] ", end="")
 			break
 		#print(to_print)
+	return any_update
 
 print('[search path]', SRCH_PATH)
 paths = glob.glob(SRCH_PATH)
@@ -79,7 +82,8 @@ for path in paths:
 			j['failed'] += 1
 			print("<* Failed *> %s" % path)
 			continue
-		write_feeds(dirname, entries, j['recent'])
+		if write_feeds(dirname, entries, j['recent']):
+			j['last-update'] = str(datetime.datetime.now())
 		j['title'] = title
 		j['link'] = link
 		j['view-engine'] = 'feed-view' # support listify

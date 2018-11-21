@@ -1,5 +1,5 @@
 {
   "detailed": true,
-  "sortable_keys": ["title", "failed", "_dir_num_files"],
+  "sortable_keys": ["title", "failed", "_dir_num_files", "last-update"],
   "view-engine": "feed-folder-view"
 }
