@@ -9,6 +9,8 @@ import uuid
 import shutil
 import os
 
+FEED_LIST = './feeds/feed.list'
+
 # SRCH_PATH = "./test/**/**/_feed_.json"
 # MAX_CACHE = 3
 
@@ -97,16 +99,20 @@ def process_feed_file(path):
 print('[search path]', SRCH_PATH)
 paths = glob.glob(SRCH_PATH)
 
-for path in paths:
-	print(path, end=": ")
-	dirname = os.path.dirname(path)
-	# process _feed_.json file
-	j = process_feed_file(path)
-	# write back to the file
-	with open(path, 'w') as fh:
-		json.dump(j, fh, indent=4)
-	# make _list_.json copy to support listify
-	cur_dir = os.path.dirname(os.path.realpath(__file__))
-	from_path = cur_dir + '/' + path
-	link_path = cur_dir + '/' + dirname + '/_list_.json'
-	shutil.copyfile(from_path, link_path)
+with open(FEED_LIST, 'w') as feed_list_fh:
+	for path in paths:
+		print(path, end=": ")
+		dirname = os.path.dirname(path)
+		# process _feed_.json file
+		j = process_feed_file(path)
+		# write back to the file
+		with open(path, 'w') as fh:
+			json.dump(j, fh, indent=4)
+		# make _list_.json copy to support listify
+		cur_dir = os.path.dirname(os.path.realpath(__file__))
+		from_path = cur_dir + '/' + path
+		link_path = cur_dir + '/' + dirname + '/_list_.json'
+		shutil.copyfile(from_path, link_path)
+		# append to feed list
+		print(j['url'], file=feed_list_fh)
+		feed_list_fh.flush()

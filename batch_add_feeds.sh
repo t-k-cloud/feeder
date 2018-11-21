@@ -20,4 +20,4 @@ while read line
 do
 	echo $line
 	request "$line" 2> /dev/null | parseJSON
-done < feed.list
+done < feeds/feed.list
