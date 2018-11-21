@@ -49,7 +49,7 @@ def write_feeds(dirname, entries, recent):
 			continue
 		link = ent["link"]
 		if link not in recent:
-			print('[update] %s' % link)
+			ent['fetch-time'] = str(datetime.datetime.now())
 			p = dirname + '/' + str(uuid.uuid1()) + '.feed.json'
 			with open(p, 'w') as fh:
 				json.dump(ent, fh)
