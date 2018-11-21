@@ -41,8 +41,13 @@ def write_feeds(dirname, entries, recent):
 	any_update = False
 	# write JSON feeds to files
 	for ent in entries:
+		if (len(ent["title"]) == 0 or
+		    len(ent["link"])  == 0 or
+		    len(ent["desc"])  == 0):
+			continue
 		link = ent["link"]
 		if link not in recent:
+			print('[update] %s' % link)
 			p = dirname + '/' + str(uuid.uuid1()) + '.feed.json'
 			with open(p, 'w') as fh:
 				json.dump(ent, fh)
@@ -75,7 +80,7 @@ for path in paths:
 		if 'recent' not in j:
 			j['recent'] = {}
 		if 'url' not in j:
-			print("[no url] %s" % path)
+			print("[no url]")
 			continue
 		try:
 			title, link, entries = fetch(j['url'])
@@ -84,7 +89,7 @@ for path in paths:
 			exit(1)
 		except:
 			j['failed'] += 1
-			print("<* Failed *> %s" % path)
+			print("<* Failed *>")
 			continue
 		if write_feeds(dirname, entries, j['recent']):
 			j['last-update'] = str(datetime.datetime.now())
@@ -92,7 +97,7 @@ for path in paths:
 		j['link'] = link
 		j['view-engine'] = 'feed-view' # support listify
 		j['detailed'] = True # support listify
-		print("[%s] %s" % (title, path))
+		print("[%s]" % title)
 	# write back to the file
 	with open(path, 'w') as fh:
 		json.dump(j, fh, indent=4)
