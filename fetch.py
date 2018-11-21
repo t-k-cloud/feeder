@@ -66,14 +66,7 @@ def write_feeds(dirname, entries, recent):
 		#print(to_print)
 	return any_update
 
-print('[search path]', SRCH_PATH)
-paths = glob.glob(SRCH_PATH)
-
-for path in paths:
-	print(path, end=": ")
-	dirname = os.path.dirname(path)
-	j = {}
-	# read _feed_.json file
+def process_feed_file(path):
 	with open(path) as fh:
 		j = json.load(fh)
 		if 'failed' not in j:
@@ -82,7 +75,7 @@ for path in paths:
 			j['recent'] = {}
 		if 'url' not in j:
 			print("[no url]")
-			continue
+			return j
 		try:
 			title, link, entries = fetch(j['url'])
 		except KeyboardInterrupt:
@@ -91,9 +84,7 @@ for path in paths:
 		except:
 			j['failed'] += 1
 			print("<* Failed *>")
-			with open(path, 'w') as fh:
-				json.dump(j, fh, indent=4)
-			continue
+			return j
 		if write_feeds(dirname, entries, j['recent']):
 			j['last-update'] = str(datetime.datetime.now())
 		j['title'] = title
@@ -101,6 +92,16 @@ for path in paths:
 		j['view-engine'] = 'feed-view' # support listify
 		j['detailed'] = True # support listify
 		print("[%s]" % title)
+		return j
+
+print('[search path]', SRCH_PATH)
+paths = glob.glob(SRCH_PATH)
+
+for path in paths:
+	print(path, end=": ")
+	dirname = os.path.dirname(path)
+	# process _feed_.json file
+	j = process_feed_file(path)
 	# write back to the file
 	with open(path, 'w') as fh:
 		json.dump(j, fh, indent=4)
