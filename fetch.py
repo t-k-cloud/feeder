@@ -90,6 +90,8 @@ for path in paths:
 		except:
 			j['failed'] += 1
 			print("<* Failed *>")
+			with open(path, 'w') as fh:
+				json.dump(j, fh, indent=4)
 			continue
 		if write_feeds(dirname, entries, j['recent']):
 			j['last-update'] = str(datetime.datetime.now())
