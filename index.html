@@ -40,7 +40,7 @@
       add_feed: function (folder, url) {
         var vm = this
         vm.response = {'OK': 'wating server response...'}
-        axios.get('/add-feed', {
+        axios.get('/feeder/add-feed', {
           params: {
             'folder': folder,
             'url': url
@@ -51,13 +51,13 @@
       },
       feed_list: function () {
         var vm = this
-        axios.get('/feed-list').then(function (res) {
+        axios.get('/feeder/feed-list').then(function (res) {
           vm.response = res.data
         });
       },
       feed_list_length: function () {
         var vm = this
-        axios.get('/feed-list-length').then(function (res) {
+        axios.get('/feeder/feed-list-length').then(function (res) {
           vm.response = res.data
         });
       }

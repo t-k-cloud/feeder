@@ -9,13 +9,14 @@ var process = require('process')
 var filenamify = require('filenamify');
 var lineReader = require('line-reader')
 
-var app = express();
-app.use(express.static('.'));
-app.use(bodyParser.json());
-
 // FEED_ROOT = './test'
 FEED_ROOT = './feeds'
 FEED_LIST = './feeds/feed.list'
+FEED_URI = '/feeder'
+
+var app = express();
+app.use(FEED_URI, express.static('.'));
+app.use(bodyParser.json());
 
 /* load all existing feed links */
 function read_feed_links() {
@@ -91,7 +92,7 @@ read_feed_links().then((feeds) => {
 	app.listen(port);
 	console.log('listening on port ' + port)
 
-	app.get('/add-feed/', function (req, res) {
+	app.get(FEED_URI + '/add-feed/', function (req, res) {
 		const url = ''
 		const folder = req.query.folder
 
@@ -141,7 +142,7 @@ read_feed_links().then((feeds) => {
 				}
 			})
 		}
-	}).get('/feed-list/', function (req, res) {
+	}).get(FEED_URI + '/feed-list/', function (req, res) {
 		var list = []
 		lineReader.eachLine(FEED_LIST, (line, last) => {
 			list.push(line)
@@ -149,7 +150,7 @@ read_feed_links().then((feeds) => {
 				res.json({list, 'len': list.length})
 			}
 		})
-	}).get('/feed-list-length/', function (req, res) {
+	}).get(FEED_URI + '/feed-list-length/', function (req, res) {
 		var cnt = 0
 		lineReader.eachLine(FEED_LIST, (line, last) => {
 			cnt += 1
