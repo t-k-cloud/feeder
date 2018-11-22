@@ -7,6 +7,7 @@ var feedParser = require('feedparser');
 var request = require('request');
 var process = require('process')
 var filenamify = require('filenamify');
+var lineReader = require('line-reader')
 
 var app = express();
 app.use(express.static('.'));
@@ -14,6 +15,7 @@ app.use(bodyParser.json());
 
 // FEED_ROOT = './test'
 FEED_ROOT = './feeds'
+FEED_LIST = './feeds/feed.list'
 
 /* load all existing feed links */
 function read_feed_links() {
@@ -39,6 +41,7 @@ function fetch_feed_title(url) {
 		var feedparser = new feedParser();
 		process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 		var req = request(url, {timeout: 15 * 1000} /* milliseconds */)
+
 		req.on('error', function (error) {
 			resolve([null, 'Connection error: ' + error])
 		});
@@ -89,8 +92,17 @@ read_feed_links().then((feeds) => {
 	console.log('listening on port ' + port)
 
 	app.get('/add-feed/', function (req, res) {
-		const url = normUrl(req.query.url)
+		const url = ''
 		const folder = req.query.folder
+
+		try {
+			url = normUrl(req.query.url)
+		} catch (err) {
+			res.json({
+				'result': 'invalid URL.'
+			});
+			return
+		}
 
 		if (feeds[url]) {
 			console.log(`${url} exists already!`)
@@ -129,6 +141,22 @@ read_feed_links().then((feeds) => {
 				}
 			})
 		}
+	}).get('/feed-list/', function (req, res) {
+		var list = []
+		lineReader.eachLine(FEED_LIST, (line, last) => {
+			list.push(line)
+			if (last) {
+				res.json({list, 'len': list.length})
+			}
+		})
+	}).get('/feed-list-length/', function (req, res) {
+		var cnt = 0
+		lineReader.eachLine(FEED_LIST, (line, last) => {
+			cnt += 1
+			if (last) {
+				res.json({'number of feeds currently': cnt})
+			}
+		})
 	})
 
 	process.on('SIGINT', function() {

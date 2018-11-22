@@ -15,6 +15,7 @@
         <option v-for="f in folders" v-bind:value="f">{{f}}</option>
       </select>
       <input style="flex: 5" type="text" v-model="url"/>
+      <button style="flex: 1" @click="feed_list()">feed list</button>
       <button style="flex: 1" @click="add_feed(folder, url)">add feed</button>
     </div>
   <h3>Server response: {{response.result}}</h3>
@@ -41,7 +42,22 @@
         }).then(function (res) {
           vm.response = res.data
         });
+      },
+      feed_list: function () {
+        var vm = this
+        axios.get('/feed-list').then(function (res) {
+          vm.response = res.data
+        });
+      },
+      feed_list_length: function () {
+        var vm = this
+        axios.get('/feed-list-length').then(function (res) {
+          vm.response = res.data
+        });
       }
+    },
+    mounted: function () {
+      this.feed_list_length()
     }
   })
   </script>
