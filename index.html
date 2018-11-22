@@ -21,8 +21,9 @@
         <option v-for="f in folders" v-bind:value="f">{{f}}</option>
       </select>
       <input style="flex: 5" type="text" v-model="url"/>
-      <button style="flex: 1" @click="feed_list()">feed list</button>
       <button style="flex: 1" @click="add_feed(folder, url)">add feed</button>
+      <button style="flex: 1" @click="feed_list()">feed list</button>
+      <button style="flex: 1" @click="feed_list_length()">number of feeds</button>
     </div>
   <h3>Server response: {{response.result}}</h3>
   <pre>{{response}}</pre>
