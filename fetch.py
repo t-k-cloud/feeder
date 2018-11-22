@@ -76,7 +76,7 @@ def process_feed_file(path):
 		if 'recent' not in j:
 			j['recent'] = {}
 		if 'url' not in j:
-			print("[no url]")
+			print("[no url]", flush=True)
 			return j
 		try:
 			title, link, entries = fetch(j['url'])
@@ -85,7 +85,7 @@ def process_feed_file(path):
 			exit(1)
 		except:
 			j['failed'] += 1
-			print("<* Failed *>")
+			print("<* Failed *>", flush=True)
 			return j
 		ups = write_feeds(dirname, entries, j['recent'])
 		if ups: j['last-update'] = str(datetime.datetime.now())
@@ -93,10 +93,10 @@ def process_feed_file(path):
 		j['link'] = link
 		j['view-engine'] = 'feed-view' # support listify
 		j['detailed'] = True # support listify
-		print("[%s] %d updates" % (title, ups))
+		print("[%s] %d updates" % (title, ups), flush=True)
 		return j
 
-print('[fetch feeds]', SRCH_PATH)
+print('[fetch feeds]', SRCH_PATH, flush=True)
 paths = glob.glob(SRCH_PATH)
 
 with open(FEED_LIST + '.tmp', 'w') as feed_list_fh:
@@ -116,7 +116,7 @@ with open(FEED_LIST + '.tmp', 'w') as feed_list_fh:
 			link_path = cur_dir + '/' + dirname + '/_list_.json'
 			shutil.copyfile(from_path, link_path)
 		except FileNotFoundError:
-			print("[path not found] %s" % path)
+			print("[path not found] %s" % path, flush=True)
 			continue
 		# append to feed list
 		print(tag, j['url'], file=feed_list_fh)
