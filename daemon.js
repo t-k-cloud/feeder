@@ -41,7 +41,12 @@ function fetch_feed_title(url) {
 	return new Promise((resolve) => {
 		var feedparser = new feedParser();
 		process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
-		var req = request(url, {timeout: 15 * 1000} /* milliseconds */)
+		var req = request(url, {
+			headers: {
+				'User-Agent': 'nodejs request'
+			},
+			timeout: 15 * 1000 /* milliseconds */
+		})
 
 		req.on('error', function (error) {
 			resolve([null, 'Connection error: ' + error])
@@ -93,14 +98,14 @@ read_feed_links().then((feeds) => {
 	console.log('listening on port ' + port)
 
 	app.get(FEED_URI + '/add-feed/', function (req, res) {
-		const url = ''
+		var url = ''
 		const folder = req.query.folder
 
 		try {
 			url = normUrl(req.query.url)
 		} catch (err) {
 			res.json({
-				'result': 'invalid URL.'
+				'result': `invalid URL: ${req.query.url}`
 			});
 			return
 		}

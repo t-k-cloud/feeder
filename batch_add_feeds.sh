@@ -1,7 +1,7 @@
 #!/bin/bash
 function request() {
 	curl -G \
-		"http://localhost:8821/add-feed/" \
+		"http://localhost/feeder/add-feed/" \
 		--data folder=$1 \
 		--data-urlencode url=$2
 }
@@ -23,3 +23,5 @@ do
 	echo "tag=$tag, url=$url"
 	request "$tag" "$url" 2> /dev/null | parseJSON
 done < feeds/feed.list
+
+touch feeds/added.tmp # unlock flag for running fetch.py
