@@ -10,6 +10,12 @@
 <body>
   <h1>Feeder</h1>
   <div id="app">
+    <ul>
+      <li v-for="f in folders">
+      <a v-bind:href="'/list/feeds/' + f">/list/feeds/{{f}}</a>
+      </li>
+    </ul>
+    <h2>Add feed</h2>
     <div style="display: flex; justify-content: center; flex-wrap: wrap">
       <select style="flex: 1" v-model="folder">
         <option v-for="f in folders" v-bind:value="f">{{f}}</option>
