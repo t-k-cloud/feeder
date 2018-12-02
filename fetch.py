@@ -9,13 +9,15 @@ import uuid
 import shutil
 import os
 
+OVERWRITE_LOCK = './feeds/added.tmp'
+
 FEED_LIST = './feeds/feed.list'
 
 # SRCH_PATH = "./test/**/**/_feed_.json"
 # MAX_CACHE = 3
 
 SRCH_PATH = "./feeds/**/**/_feed_.json"
-MAX_CACHE = 1000
+MAX_CACHE = 500
 
 def fetch(url):
 	socket.setdefaulttimeout(20)
@@ -128,4 +130,6 @@ with open(FEED_LIST + '.tmp', 'w') as feed_list_fh:
 		feed_list_fh.flush()
 
 # savely overwrite
-shutil.move(FEED_LIST + '.tmp', FEED_LIST)
+if os.path.isfile(OVERWRITE_LOCK):
+	print('safely overwrite ...')
+	shutil.move(FEED_LIST + '.tmp', FEED_LIST)
