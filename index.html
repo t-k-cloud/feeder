@@ -81,7 +81,7 @@
           method: 'get',
           url: '/jobd/log/service-feeder:up'
         }).then(function (res) {
-          vm.matrix = res
+          vm.matrix = res['data']
         }).catch(function (err) {
           clearInterval(itv)
         })
