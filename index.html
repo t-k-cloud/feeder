@@ -36,7 +36,7 @@
       folder: 'blog',
       url: '',
       response: {},
-	  matrix: '',
+      matrix: '(◕‿◕✿) ',
       folders: ['blog', 'news']
     },
     methods: {
@@ -81,7 +81,7 @@
           method: 'get',
           url: '/jobd/log/service-feeder:up'
         }).then(function (res) {
-          vm.matrix = res.body
+          vm.matrix = res
         }).catch(function (err) {
           clearInterval(itv)
         })
