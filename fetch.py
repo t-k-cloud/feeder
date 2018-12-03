@@ -87,7 +87,7 @@ def process_feed_file(path):
 			title, link, updated, entries = fetch(j['url'])
 		except KeyboardInterrupt:
 			print("Aborted by KeyboardInterrupt.")
-			exit(1)
+			exit(1) # quit so we do not cp and overwrite feed.list
 		except:
 			j['failed'] += 1
 			print("<* Failed *>", flush=True)
@@ -123,7 +123,7 @@ with open(FEED_LIST + '.tmp', 'w') as feed_list_fh:
 			shutil.copyfile(from_path, link_path)
 		except FileNotFoundError:
 			print("[path not found] %s" % path, flush=True)
-			continue
+			continue # the only case to drop a feed forever
 		# append to feed list
 		print(tag, j['url'], file=feed_list_fh)
 		time.sleep(1)
