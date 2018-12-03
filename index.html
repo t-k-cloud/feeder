@@ -41,14 +41,21 @@
       add_feed: function (folder, url) {
         var vm = this
         vm.response = {'OK': 'wating server response...'}
-        axios.get('/feeder/add-feed', {
-          params: {
-            'folder': folder,
-            'url': url
-          }
+        axios({
+          method: 'get',
+          url: '/feeder/add-feed',
+          responseType: 'json',
+          params: {'folder': folder, 'url': url}
         }).then(function (res) {
           vm.response = res.data
-        });
+          if (res.data.login) /* need to login? */
+            setTimeout(function() {
+              window.location.href = res.data.login + '?next='
+                + encodeURIComponent(window.location.href)
+            }, 1000);
+        }).catch(function (err) {
+          console.log(err)
+        })
       },
       feed_list: function () {
         var vm = this

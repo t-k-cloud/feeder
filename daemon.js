@@ -8,6 +8,7 @@ var request = require('request');
 var process = require('process')
 var filenamify = require('filenamify');
 var lineReader = require('line-reader')
+var expAuth = require('../auth/express-auth.js')
 
 // FEED_ROOT = './test'
 FEED_ROOT = './feeds'
@@ -17,6 +18,14 @@ FEED_URI = '/feeder'
 var app = express();
 app.use(FEED_URI, express.static('.'));
 app.use(bodyParser.json());
+
+/* authentication middleware */
+var am = expAuth.middleware
+expAuth.init(app, {
+	loginRoute: '/auth/login',
+	verifyUrl: 'http://localhost/auth/token_verify',
+	keyName: 'tk-auth'
+})
 
 /* load all existing feed links */
 function read_feed_links() {
@@ -97,7 +106,7 @@ read_feed_links().then((feeds) => {
 	app.listen(port);
 	console.log('listening on port ' + port)
 
-	app.get(FEED_URI + '/add-feed/', function (req, res) {
+	app.get(FEED_URI + '/add-feed/', am, function (req, res) {
 		var url = ''
 		const folder = req.query.folder
 
