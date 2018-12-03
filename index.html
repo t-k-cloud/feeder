@@ -8,14 +8,14 @@
     <script src="node_modules/axios/dist/axios.min.js" type="text/javascript" charset="utf-8"></script>
   </head>
 <body>
-  <h1>Feeder</h1>
+  <h3>Read feeds</h3>
   <div id="app">
     <ul>
       <li v-for="f in folders">
       <a v-bind:href="'/listify/list/feeds/' + f">/feeds/{{f}}</a>
       </li>
     </ul>
-    <h2>Add feed</h2>
+    <h3>Add new feed</h3>
     <div style="display: flex; justify-content: center; flex-wrap: wrap">
       <select style="flex: 1" v-model="folder">
         <option v-for="f in folders" v-bind:value="f">{{f}}</option>
