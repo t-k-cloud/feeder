@@ -79,9 +79,10 @@
       var itv = setInterval(() => {
         axios({
           method: 'get',
-          url: '/jobd/log/service-feeder:up'
+          url: '/jobd/log/service-feeder:fetch-timer'
         }).then(function (res) {
-          vm.matrix = res['data']
+          var matrix = res['data']
+          vm.matrix = matrix.replace(/\n\n/g, "\n");
         }).catch(function (err) {
           clearInterval(itv)
         })
