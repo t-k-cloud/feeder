@@ -27,6 +27,7 @@
     </div>
   <h3>Server response: {{response.result}}</h3>
   <pre>{{response}}</pre>
+  <pre style="background-color: black; color: grey">{{matrix}}</pre>
   </div>
   <script type="text/javascript" charset="utf-8">
   new Vue({
@@ -35,6 +36,7 @@
       folder: 'blog',
       url: '',
       response: {},
+	  matrix: '',
       folders: ['blog', 'news']
     },
     methods: {
@@ -72,6 +74,18 @@
     },
     mounted: function () {
       this.feed_list_length()
+
+      var vm = this
+      var itv = setInterval(() => {
+        axios({
+          method: 'get',
+          url: '/jobd/log/service-feeder:up'
+        }).then(function (res) {
+          vm.matrix = res.body
+        }).catch(function (err) {
+          clearInterval(itv)
+        })
+      }, 1000)
     }
   })
   </script>
