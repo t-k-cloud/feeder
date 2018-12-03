@@ -90,7 +90,7 @@ def process_feed_file(path):
 			exit(1) # quit so we do not cp and overwrite feed.list
 		except:
 			j['failed'] += 1
-			print("<* Failed *>", flush=True)
+			print("<* Failed *> %s" % j['url'], flush=True)
 			return j
 		n_new = write_feeds(dirname, entries, j['recent'])
 		if n_new: j['last-fetched'] = str(datetime.datetime.now())
