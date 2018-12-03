@@ -27,6 +27,7 @@
     </div>
   <h3>Server response: {{response.result}}</h3>
   <pre>{{response}}</pre>
+  <h3>Cloud-side crawler</h3>
   <pre style="background-color: black; color: grey">{{matrix}}</pre>
   </div>
   <script type="text/javascript" charset="utf-8">
@@ -82,9 +83,10 @@
           url: '/jobd/log/service-feeder:fetch-timer'
         }).then(function (res) {
           const arr = res['data'].split('\n')
-          const L = 15 // print last L lines
-          if (arr.length > L)
-            vm.matrix = arr.slice(arr.length - L, L).join('\n');
+          const N = 15 // print last L lines
+          const l = arr.length
+          if (l > N)
+            vm.matrix = arr.slice(l - N, l).join('\n');
           else
             vm.matrix = res['data']
         }).catch(function (err) {
