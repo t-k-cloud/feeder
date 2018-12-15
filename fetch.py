@@ -63,15 +63,11 @@ def write_feeds(dirname, entries, recent):
 	# avoid recent records being oversized
 	ordered_keys = sorted(recent, key=lambda x: x[1], reverse=True)
 	for k in ordered_keys:
-		#to_print = (recent[k], k)
 		if len(recent) > MAX_CACHE:
-			#print("[dele] ", end="")
 			del recent[k]
 		else:
-			#print("[keep] ", end="")
 			break
-		#print(to_print)
-	return any_update
+	return any_update, len(recent)
 
 def process_feed_file(path):
 	with open(path) as fh:
@@ -92,14 +88,15 @@ def process_feed_file(path):
 			j['failed'] += 1
 			print("<* Failed *> %s" % j['url'], flush=True)
 			return j
-		n_new = write_feeds(dirname, entries, j['recent'])
+		n_new, n_hist = write_feeds(dirname, entries, j['recent'])
 		if n_new: j['last-fetched'] = str(datetime.datetime.now())
 		j['title'] = title
 		j['link'] = link
 		j['last-updated'] = updated
 		j['view-engine'] = 'feed-view' # support listify
 		j['detailed'] = True # support listify
-		print("[%s] %d updates" % (title, n_new), flush=True)
+		print("[%s] %d updates, cached: %u/%u" % (
+			title, n_new, n_hist, MAX_CACHE), flush=True)
 		return j
 
 print('[fetch feeds]', SRCH_PATH, flush=True)
