@@ -17,7 +17,7 @@ FEED_LIST = './feeds/feed.list'
 # MAX_CACHE = 3
 
 SRCH_PATH = "./feeds/**/**/_feed_.json"
-MAX_CACHE = 500
+MAX_CACHE = 2048
 
 def fetch(url):
 	socket.setdefaulttimeout(20)
